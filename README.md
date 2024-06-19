@@ -11,3 +11,5 @@ Expected scripts order:
 `src/unlabeled_effnet_labeling.py`
 `src/unlabeled_preproc_labels.py`
 `src/train.py`
+smth with model weights
+`src/inference.py`
