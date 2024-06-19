@@ -12,6 +12,11 @@ def mel(arr, sr=32_000):
                                           fmin=40, fmax=15000, power=2.0)
     spec = spec.astype('float32')
     return spec
+
+def mel_preproc(x):
+    x = librosa.power_to_db(x, ref=1, top_db=100.0)
+    x = x.astype('float32')
+    return x
     
 
 if __name__ == "__main__":
