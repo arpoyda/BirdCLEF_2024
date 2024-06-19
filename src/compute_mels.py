@@ -32,13 +32,12 @@ if __name__ == "__main__":
         os.makedirs('/'.join(row['mel_path'].split('/')[:-1]), exist_ok=True)
         np.save(row['mel_path'], mel_spec)
 
-    indexes = data.index[:10]
+    indexes = data.index
     _ = joblib.Parallel(n_jobs=-1, backend="loky")(
             joblib.delayed(process_train)(idx) for idx in tqdm(indexes, total=len(indexes))
         )
     print("Done")
 
-    unlab_csv_path = 'tmp/train_noduplicates.csv'
     unlab_path = 'data/unlabeled_soundscapes/'
     unlab_output_path = 'tmp/unlabeled_mels/'
 
@@ -59,7 +58,7 @@ if __name__ == "__main__":
             end = (i + 1) * 320 * 12
             np.save(row['mel_path'].replace('.npy', f'_{i}.npy'), mel_spec[:, start:end])
 
-    indexes = data_unlabeled.index[:10]
+    indexes = data_unlabeled.index
     _ = joblib.Parallel(n_jobs=-1, backend="loky")(
             joblib.delayed(process_unlabeled)(idx) for idx in tqdm(indexes, total=len(indexes))
         )
