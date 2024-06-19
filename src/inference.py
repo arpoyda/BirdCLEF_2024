@@ -22,7 +22,6 @@ model_paths = [
     'models_weights/80low_trainnolab_10sec_gr20sec_ep7oo7.ckpt',
     'models_weights/train80low_nolab_10sec_gr60sec_lr1e3_ep12.ckpt',
     'models_weights/fold0_10sec_30secav_trainnolab_gr60sec_ep9.ckpt',
-
     # RegNetY
     'models_weights/regnety_10sec_gr60sec_fold0.ckpt',
     'models_weights/regnety_10sec_gr30sec_fold0.ckpt',
@@ -62,9 +61,8 @@ print(f'{len(models)} models are ready')
 
 # load and preprocess data
 test_paths = [test_audio_path + f for f in sorted(os.listdir(test_audio_path))]
-if len(test_paths) == 1:
-    test_audio_path = unlab_audio_path
-    test_paths = [test_audio_path + f for f in sorted(os.listdir(test_audio_path))][:3]
+if len(test_paths) <= 1:
+    test_paths = [unlab_audio_path + f for f in sorted(os.listdir(unlab_audio_path))][:3]
 test_df = pd.DataFrame(test_paths, columns=['filepath'])
 test_df['filename'] = test_df.filepath.map(lambda x: x.split('/')[-1].replace('.ogg',''))
 
