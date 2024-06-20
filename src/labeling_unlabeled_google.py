@@ -46,14 +46,14 @@ for i, spec in enumerate(list(species_2024_x_google)):
     species_to_label_2024_x_google[spec] = google_species_to_label_reverse[spec]
     label_to_index_2024_x_google_reset_index[i] = spec
     
-actual_indeces = np.array(list(species_to_label_2024_x_google.values()))
+actual_indices = np.array(list(species_to_label_2024_x_google.values()))
 
 
 #===================================#
 #== Labeling Unlabeled Soundscapes ==#
 #===================================#
 
-unlabeled_soundscapes = sorted(os.listdir(unlabeled_path))[:10]
+unlabeled_soundscapes = sorted(os.listdir(unlabeled_path))
 
 paths = []
 offsets = []
@@ -67,7 +67,7 @@ for path in tqdm(unlabeled_soundscapes):
     step = sr * 5
     for i in range(n_chunks):
         x = x_full[step * i : step * (i+1)]
-        logits.append(model.infer_tf(x[np.newaxis, :])[0][0].numpy()[actual_indeces])
+        logits.append(model.infer_tf(x[np.newaxis, :])[0][0].numpy()[actual_indices])
         offsets.append(i * 5)
         paths.append(path)
 
