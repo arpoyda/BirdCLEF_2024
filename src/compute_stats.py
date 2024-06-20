@@ -41,3 +41,4 @@ train2024['T'] = train2024['std_s'] + train2024['var_s'] + train2024['rms_s'] + 
 quantile = train2024.groupby('primary_label')['T'].quantile(0.8).reset_index()
 quantile.columns = ['primary_label', 'T_80q']
 data24_cp = pd.merge(train2024, quantile, on='primary_label')
+data24_cp.to_csv(output_path, index=False)

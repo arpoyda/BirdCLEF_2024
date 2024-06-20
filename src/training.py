@@ -123,7 +123,7 @@ trainer = Trainer(
     callbacks=[rich_progress, lr_monitor, checkpoint_callback],
     # logger=logger,
     log_every_n_steps=50,
-    accelerator='gpu',
+    # accelerator='gpu',
 )
 trainer.fit(lit_cls, datamodule=datamodule)
 # wandb.finish()
