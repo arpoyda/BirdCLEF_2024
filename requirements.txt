@@ -1,7 +1,7 @@
 albumentations==1.4.10
 joblib==1.4.2
 librosa==0.10.1
-numpy==2.0.0
+numpy==1.26.4
 openvino==2024.1.0
 pandas==2.2.2
 pytorch_lightning==2.0.3

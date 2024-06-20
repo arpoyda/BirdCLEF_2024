@@ -6,9 +6,9 @@ from tqdm import tqdm
 from sklearn.preprocessing import StandardScaler
 
 
-train_csv_path = 'data/train_noduplicates.csv'
+train_csv_path = 'tmp/train_noduplicates.csv'
 train_path = 'data/train_audio/'
-output_path = 'tmp/train_noduplicates.csv'
+output_path = 'tmp/train_stats.csv'
 
 
 def calculate_statistics(x):
@@ -19,6 +19,7 @@ def calculate_statistics(x):
     return np.hstack([std, var, rms, pwr])
 
 train2024 = pd.read_csv(train_csv_path)
+train2024['path'] = train_path + train2024["filename"]
 
 def get_stats(i):
     p = train2024.iloc[i]['path']
@@ -37,6 +38,6 @@ train2024 = pd.concat([train2024, stats], axis=1)
 train2024[['std_s', 'var_s', 'rms_s', 'pwr_s']] = StandardScaler().fit_transform(train2024[['std', 'var', 'rms', 'pwr']])
 train2024['T'] = train2024['std_s'] + train2024['var_s'] + train2024['rms_s'] + train2024['pwr_s']
 
-quantile = train2024.groupby('label')['T'].quantile(0.8).reset_index()
-quantile.columns = ['label', 'T_80q']
-data24_cp = pd.merge(train2024, quantile, on='label')
+quantile = train2024.groupby('primary_label')['T'].quantile(0.8).reset_index()
+quantile.columns = ['primary_label', 'T_80q']
+data24_cp = pd.merge(train2024, quantile, on='primary_label')

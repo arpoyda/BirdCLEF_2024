@@ -3,7 +3,7 @@ import pandas as pd
 from ast import literal_eval
 import torch
 import torch.nn.functional as F
-from sklearn.preprocessing import OneHotEncoder
+from sklearn.preprocessing import OneHotEncoder, LabelEncoder
 
 import warnings
 warnings.filterwarnings("ignore")
@@ -36,7 +36,9 @@ data.loc[data.filename.isin(all_wrong_filenames), 'good'] = 1
 
 data[LABELS] = F.softmax(torch.Tensor(data[LABELS].values), dim=-1).numpy()
 pseudo_labels = data[LABELS].values
-ohe = OneHotEncoder(categories=[np.array(range(182))], sparse_output=False)
+le = LabelEncoder()
+data['label'] = le.fit_transform(data['primary_label'].values)
+ohe = OneHotEncoder(categories=[np.array(range(len(LABELS)))], sparse_output=False)
 true_labels = ohe.fit_transform(data['label'].values.reshape(-1, 1))
 data[LABELS] = true_labels
 

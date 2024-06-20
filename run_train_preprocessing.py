@@ -22,7 +22,7 @@ print('--Computing statistics...')
 os.system("python ./src/compute_stats.py")
 
 print('--Labeling by google...')
-os.system("python ./src/train_google_labeling.py")
+os.system("python ./src/labeling_train_google.py")
 
 print('--Processing labels...')
-os.system("python ./src/train_preproc_labels.py")
+os.system("python ./src/preproc_labels_train.py")
