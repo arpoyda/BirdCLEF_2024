@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import json
 import librosa
 import warnings
 warnings.simplefilter(action='ignore', category=pd.errors.PerformanceWarning)
@@ -24,15 +25,6 @@ from pytorch_lightning.callbacks import ModelCheckpoint, LearningRateMonitor, Ri
 import timm
 import albumentations as A
 import wandb
-
-
-class CFG:
-    model_name = 'efficientnet_b0'  # {'efficientnet_b0', 'regnety_008.pycls_in1k'}
-    learning_rate: float = 1e-3     # {1e-3, 3e-3}
-    epochs_num = 12                 # {7, 9, 12}
-    segmentation_sec = 60           # {20, 30, 60}
-    split_type = 'fold0'            # {'fold0', '80low'}
-    batch_size = 96
 
 
 class BirdDataset(Dataset):
@@ -217,6 +209,10 @@ if __name__ == "__main__":
     train_stats_path = 'tmp/train_stats.csv'
     unlab_path = 'tmp/unlabeled_prepared.csv'
 
+    # load config
+    with open('configs/effnet_seg60_fold0.json', 'r') as f:
+        CFG = json.load(f)
+
     # read train metadata
     data = pd.read_csv(train_lab_path)
     LABELS = sorted(data['primary_label'].unique())
@@ -230,13 +226,13 @@ if __name__ == "__main__":
     data_unlab = data_unlab.drop(columns=LABELS)
 
     # split only train_audio part
-    if CFG.split_type == 'fold0':
+    if CFG['split_type'] == 'fold0':
         data_nodup = pd.read_csv(train_csv_path)
         kf_splitter = KFold(n_splits=5, random_state=42, shuffle=True)
         train_idx, valid_idx = list(kf_splitter.split(data_nodup, data_nodup['label']))[0]
         train_filenames = data_nodup.loc[train_idx].filename
         valid_filenames = data_nodup.loc[valid_idx].filename
-    elif CFG.split_type == '80low':
+    elif CFG['split_type'] == '80low':
         data_quantile = pd.read_csv(train_stats_path)
         train_filenames = data_quantile[data_quantile['T'] <= data_quantile['T_80q']].filename
         valid_filenames = data_quantile[data_quantile['T'] > data_quantile['T_80q']].filename
@@ -262,16 +258,17 @@ if __name__ == "__main__":
     ])
     train_dataset = BirdDataset(df=train_df,
                                 transform=transform, 
-                                segm_sec=CFG.segmentation_sec)
+                                segm_sec=CFG['segmentation_sec'])
     valid_dataset = BirdDataset(df=valid_df)
-    datamodule = BirdDataModule(train_dataset, valid_dataset, batch_size=CFG.batch_size)
+    datamodule = BirdDataModule(train_dataset, valid_dataset, 
+                                batch_size=CFG['batch_size'])
 
     # create pretrained model
     model = timm.create_model(
-        CFG.model_name, pretrained=True,
+        CFG['model_name'], pretrained=True,
         num_classes=182, in_chans=1,
     )
-    lit_cls = LitCls(model, cutmix_p=0.9, learning_rate=CFG.learning_rate)
+    lit_cls = LitCls(model, cutmix_p=0.9, learning_rate=CFG['learning_rate'])
 
     # create callbacks
     checkpoint_callback = ModelCheckpoint(
@@ -294,7 +291,7 @@ if __name__ == "__main__":
     trainer = Trainer(
         check_val_every_n_epoch=1,
         num_sanity_val_steps=0,
-        max_epochs=CFG.epochs_num,
+        max_epochs=CFG['epochs_num'],
         accumulate_grad_batches=1,
         callbacks=[rich_progress, lr_monitor, checkpoint_callback],
         logger=logger,

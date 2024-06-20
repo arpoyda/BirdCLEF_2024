@@ -1,0 +1,8 @@
+{
+    "model_name":"efficientnet_b0",
+    "learning_rate": 3e-3,
+    "epochs_num": 9,
+    "segmentation_sec": 60,
+    "split_type": "fold0",
+    "batch_size": 96
+}
