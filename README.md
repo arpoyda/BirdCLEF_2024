@@ -4,7 +4,8 @@ TODO
 Expected scripts order:
 
 `src/drop_duplicates.py`
-`src/compute_mels.py`
+`src/compute_mels_train.py`
+`src/compute_mels_unlabeled.py`
 `src/train_google_labeling.py`
 `src/train_preproc_labels.py`
 `src/unlabeled_google_labeling.py`
