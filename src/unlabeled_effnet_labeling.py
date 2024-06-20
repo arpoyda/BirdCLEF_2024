@@ -3,7 +3,7 @@ import pandas as pd
 import librosa
 import torch
 import timm
-from tqdm.notebook import tqdm
+from tqdm import tqdm
 
 import warnings
 warnings.filterwarnings("ignore")

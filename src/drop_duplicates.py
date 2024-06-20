@@ -1,7 +1,7 @@
 import joblib
 import numpy as np
 import pandas as pd
-from tqdm.notebook import tqdm
+from tqdm import tqdm
 import librosa
 
 import warnings
