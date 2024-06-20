@@ -1,4 +1,4 @@
 import os
 
 print('======= TRAINING =======')
-os.system(f"python ./src/train.py -c")
+os.system(f"python ./src/training.py -c")
