@@ -37,7 +37,7 @@ train_stats_path = 'tmp/train_stats.csv'
 unlab_path = 'tmp/unlabeled_prepared.csv'
 
 # load config
-with open('configs/effnet_seg60_fold0.json', 'r') as f:
+with open(args['cfg_path'], 'r') as f:
     CFG = json.load(f)
 
 # read train metadata
