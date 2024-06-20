@@ -16,10 +16,10 @@ def mel(arr, sr=32_000):
     spec = spec.astype('float32')
     return spec
 
-def torch_to_ov(model, input_shape=[48, 1, 128, 0], name='model'):
+def torch_to_ov(model, input_shape=[48, 1, 128, 0]):
     core = ov.Core()
     ov_model = ov.convert_model(model)
-    ov_model.reshape(input_shape)
+    # ov_model.reshape(input_shape)
     compiled_model = core.compile_model(ov_model)
     return compiled_model
 
@@ -68,7 +68,7 @@ print(f'{len(models)} models are ready')
 # load and preprocess data
 test_paths = [test_audio_path + f for f in sorted(os.listdir(test_audio_path))]
 if len(test_paths) <= 1:
-    test_paths = [unlab_audio_path + f for f in sorted(os.listdir(unlab_audio_path))][:3]
+    test_paths = [unlab_audio_path + f for f in sorted(os.listdir(unlab_audio_path))][:2]
 test_df = pd.DataFrame(test_paths, columns=['filepath'])
 test_df['filename'] = test_df.filepath.map(lambda x: x.split('/')[-1].replace('.ogg',''))
 
@@ -90,21 +90,22 @@ mels_dict = dict(output)
 # make predictions
 ids = []
 preds = [np.empty(shape=(0, 182), dtype='float32') for _ in range(len(models))]
-
-for filename in test_df.filename.tolist():
-    chunks = mels_dict[filename]
-    chunks = chunks[:, np.newaxis, :, :]
-    chunks_1 = np.concatenate([chunks[:1], chunks[:-1]], axis=0)
-    chunks_2 = np.concatenate([chunks[1:], chunks[-1:]], axis=0)
-    chunks = np.concatenate([chunks_1, chunks, chunks_2], axis=-1)
-    chunks = chunks[...,160:-160]
-    chunks = librosa.power_to_db(chunks, ref=1, top_db=100.0).astype('float32')
-    for m_idx in range(len(models)):
-        rec_preds = models[m_idx](torch.from_numpy(chunks))[0]
-        preds[m_idx] = np.concatenate([preds[m_idx], rec_preds], axis=0)
-    # create ID for each chunk in the audio with the filename and frame number
-    rec_ids = [f'{filename}_{(frame_id+1)*5}' for frame_id in range(rec_preds.shape[0])]
-    ids += rec_ids
+with torch.no_grad():
+    for filename in test_df.filename.tolist():
+        chunks = mels_dict[filename]
+        chunks = chunks[:, np.newaxis, :, :]
+        chunks_1 = np.concatenate([chunks[:1], chunks[:-1]], axis=0)
+        chunks_2 = np.concatenate([chunks[1:], chunks[-1:]], axis=0)
+        chunks = np.concatenate([chunks_1, chunks, chunks_2], axis=-1)
+        chunks = chunks[...,160:-160]
+        chunks = librosa.power_to_db(chunks, ref=1, top_db=100.0).astype('float32')
+        chunks = torch.from_numpy(chunks)
+        for m_idx in range(len(models)):
+            rec_preds = models[m_idx](chunks)[0]
+            preds[m_idx] = np.concatenate([preds[m_idx], rec_preds], axis=0)
+        # create ID for each chunk in the audio with the filename and frame number
+        rec_ids = [f'{filename}_{(frame_id+1)*5}' for frame_id in range(rec_preds.shape[0])]
+        ids += rec_ids
 
 # postprocessing and ensembling
 preds = F.sigmoid(torch.Tensor(np.array(preds))).numpy()
