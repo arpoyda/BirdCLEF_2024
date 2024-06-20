@@ -25,13 +25,13 @@ def torch_to_ov(model, input_shape=[48, 1, 128, 0]):
 
 model_paths = [
     # EfficientNet_b0
-    'models_weights/80low_trainnolab_10sec_gr20sec_ep7oo7.ckpt',
-    'models_weights/train80low_nolab_10sec_gr60sec_lr1e3_ep12.ckpt',
-    'models_weights/fold0_10sec_30secav_trainnolab_gr60sec_ep9.ckpt',
+    'models_weights/effnet_seg20_80low.ckpt',
+    'models_weights/effnet_seg60_80low.ckpt',
+    'models_weights/effnet_seg60_fold0.ckpt',
     # RegNetY
-    'models_weights/regnety_10sec_gr60sec_fold0.ckpt',
-    'models_weights/regnety_10sec_gr30sec_fold0.ckpt',
-    'models_weights/regnety_10sec_gr30s_80low.ckpt',
+    'models_weights/regnety_seg60_fold0.ckpt',
+    'models_weights/regnety_seg30_fold0.ckpt',
+    'models_weights/regnety_seg30_80low.ckpt',
 ]
 
 test_audio_path = 'data/test_soundscapes/'
