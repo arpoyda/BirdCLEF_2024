@@ -8,7 +8,13 @@ import torch
 import timm
 import torch.nn.functional as F
 
-from compute_mels import mel, mel_preproc
+def mel(arr, sr=32_000):
+    arr = arr * 1024
+    spec = librosa.feature.melspectrogram(y=arr, sr=sr,
+                                          n_fft=1024, hop_length=500, n_mels=128, 
+                                          fmin=40, fmax=15000, power=2.0)
+    spec = spec.astype('float32')
+    return spec
 
 def torch_to_ov(model, input_shape=[48, 1, 128, 0], name='model'):
     core = ov.Core()
@@ -26,7 +32,7 @@ model_paths = [
     'models_weights/regnety_10sec_gr60sec_fold0.ckpt',
     'models_weights/regnety_10sec_gr30sec_fold0.ckpt',
     'models_weights/regnety_10sec_gr30s_80low.ckpt',
-    ]
+]
 
 test_audio_path = 'data/test_soundscapes/'
 unlab_audio_path = 'data/unlabeled_soundscapes/'
@@ -92,7 +98,7 @@ for filename in test_df.filename.tolist():
     chunks_2 = np.concatenate([chunks[1:], chunks[-1:]], axis=0)
     chunks = np.concatenate([chunks_1, chunks, chunks_2], axis=-1)
     chunks = chunks[...,160:-160]
-    chunks = mel_preproc(chunks)
+    chunks = librosa.power_to_db(chunks, ref=1, top_db=100.0).astype('float32')
     for m_idx in range(len(models)):
         rec_preds = models[m_idx](torch.from_numpy(chunks))[0]
         preds[m_idx] = np.concatenate([preds[m_idx], rec_preds], axis=0)

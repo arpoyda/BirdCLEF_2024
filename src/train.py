@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import librosa
 import warnings
 warnings.simplefilter(action='ignore', category=pd.errors.PerformanceWarning)
 warnings.simplefilter(action='ignore', category=pd.errors.SettingWithCopyWarning)
@@ -23,8 +24,6 @@ from pytorch_lightning.callbacks import ModelCheckpoint, LearningRateMonitor, Ri
 import timm
 import albumentations as A
 import wandb
-
-from compute_mels import mel_preproc
 
 
 class CFG:
@@ -77,7 +76,7 @@ class BirdDataset(Dataset):
         end = start + self.duration * self.pps
         x = x[:, start:end]
         x = self._cyclic_fill(x)
-        x = mel_preproc(x)
+        x = librosa.power_to_db(x, ref=1, top_db=100.0).astype('float32')
         x = x[np.newaxis, ...]
         if self.transform:
             x = x.transpose((1, 2, 0))
