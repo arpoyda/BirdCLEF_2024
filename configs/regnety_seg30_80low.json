@@ -1,4 +1,5 @@
 {
+    "name":"regnety_seg30_80low",
     "model_name":"regnety_008.pycls_in1k",
     "learning_rate": 3e-3,
     "epochs_num": 7,

@@ -1,4 +1,5 @@
 {
+    "name":"effnet_seg60_fold0",
     "model_name":"efficientnet_b0",
     "learning_rate": 3e-3,
     "epochs_num": 9,
