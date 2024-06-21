@@ -28,15 +28,21 @@ There are three options to produce the solution.
 
     Run the following scripts from the top directory.
     
-    a) `python run_train_preprocessing.py` to create mels and pseudo labeles for `data/train_audio`
+    a) Create mels and pseudo labeles for `data/train_audio`:
     
-    b) `python run_unlabeled_preprocessing.py` to create mels and pseudo labeles for `data/unlabeled_soundscapes`
+       `python run_train_preprocessing.py`
     
-    c) For each config from `configs/` in a similar way:
+    b) Create mels and pseudo labeles for `data/unlabeled_soundscapes`:
+    
+       `python run_unlabeled_preprocessing.py` 
+    
+    c) Train 6 models (for each config from `configs/` in a similar way):
 
        `python run_training.py --cfg configs/effnet_seg20_80low.json`
     
-    d) `python run_inference.py`
+    d) Make predicttion for `data/test_soundscapes`:
+    
+       `python run_inference.py`
 
     Submission file will be in `tmp/` directory.
 
