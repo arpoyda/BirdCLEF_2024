@@ -9,10 +9,10 @@ warnings.filterwarnings("ignore")
 from warnings import simplefilter
 simplefilter(action="ignore", category=pd.errors.PerformanceWarning)
 
+
 train_csv_path = 'data/train_metadata.csv'
 unlabeled_path = 'data/unlabeled_soundscapes/'
 output_path = 'tmp/labeled_google_soundscapes.csv'
-
 
 #=============================#
 #== Prepairing Google model ==#
@@ -47,7 +47,6 @@ for i, spec in enumerate(list(species_2024_x_google)):
     label_to_index_2024_x_google_reset_index[i] = spec
     
 actual_indices = np.array(list(species_to_label_2024_x_google.values()))
-
 
 #===================================#
 #== Labeling Unlabeled Soundscapes ==#

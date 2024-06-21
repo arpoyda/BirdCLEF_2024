@@ -22,9 +22,6 @@ def get_length(f):
 
 train2024 = pd.read_csv(train_csv_path)
 
-# for testing
-# train2024 = train2024.iloc[:4]
-
 lengths = joblib.Parallel(n_jobs=-1, backend="loky")(
     joblib.delayed(get_length)(f) for f in tqdm(train_path + train2024['filename'], total=len(train2024['filename']))
 )
@@ -32,4 +29,3 @@ lengths = joblib.Parallel(n_jobs=-1, backend="loky")(
 train2024['lengths'] = lengths
 train2024 = train2024.drop_duplicates(subset=['primary_label', 'author', 'lengths'])
 train2024.to_csv(output_path, index=False)
-

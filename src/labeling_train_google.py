@@ -8,10 +8,10 @@ warnings.filterwarnings("ignore")
 from warnings import simplefilter
 simplefilter(action="ignore", category=pd.errors.PerformanceWarning)
 
+
 train_csv_path = 'tmp/train_noduplicates.csv'
 train_path = 'data/train_audio/'
 output_path = 'tmp/train_google_labeled.csv'
-
 
 #=============================#
 #== Prepairing Google model ==#
@@ -48,7 +48,6 @@ for i, spec in enumerate(list(species_2024_x_google)):
     label_to_index_2024_x_google_reset_index[i] = spec
     
 actual_indeces = np.array(list(species_to_label_2024_x_google.values()))
-
 
 #=========================#
 #== Labeling Train Audio ==#

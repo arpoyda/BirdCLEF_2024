@@ -17,8 +17,6 @@ from torchmetrics.classification import MultilabelAUROC
 
 from pytorch_lightning import LightningModule, LightningDataModule
 
-# import wandb
-
 
 class BirdDataset(Dataset):
     def __init__(self, 
@@ -192,3 +190,4 @@ class LitCls(LightningModule):
         optimizer = AdamW(params=self.trainer.model.parameters(), lr=self.learning_rate)
         scheduler = CosineAnnealingLR(optimizer, T_max=self.trainer.max_epochs)
         return [optimizer], [scheduler]
+    
