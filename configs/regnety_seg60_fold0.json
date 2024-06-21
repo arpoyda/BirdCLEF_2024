@@ -1,6 +1,6 @@
 {
-    "name":"regnety_seg60_fold0",
-    "model_name":"regnety_008.pycls_in1k",
+    "name": "regnety_seg60_fold0",
+    "model_name": "regnety_008.pycls_in1k",
     "learning_rate": 1e-3,
     "epochs_num": 12,
     "segmentation_sec": 60,

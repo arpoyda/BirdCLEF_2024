@@ -1,6 +1,6 @@
 {
-    "name":"effnet_seg60_80low",
-    "model_name":"efficientnet_b0",
+    "name": "effnet_seg60_80low",
+    "model_name": "efficientnet_b0",
     "learning_rate": 1e-3,
     "epochs_num": 12,
     "segmentation_sec": 60,
