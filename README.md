@@ -1,4 +1,4 @@
-Below you can find a outline of how to reproduce [our solution](https://www.kaggle.com/competitions/birdclef-2024/discussion/512197) for the BirdCLEF 2024 competition.
+Below you can find an outline of how to reproduce [our solution](https://www.kaggle.com/competitions/birdclef-2024/discussion/512197) for the BirdCLEF 2024 competition.
 
 
 # HARDWARE and SOFTWARE:
@@ -17,21 +17,28 @@ Competition data can be downloaded from [here](https://www.kaggle.com/competitio
 
 There are three options to produce the solution.
 1) With pretrained models.
-    Run `python run_inference.py` from the top directory.
+    
+    a) Download models checkpoints from [here](https://www.kaggle.com/datasets/chemrovkirill/birdclef24-final) and put in `models_weights/`.
+
+    b) Run `python run_inference.py` from the top directory.
 
     Submission file will be in `tmp/` directory.
 
 2) Retrain from sratch.
+
     Run the following scripts from the top directory.
     
-    a) `python run_train_preprocessing.py` to create mels and pseudo labeles for `train_audio`
+    a) `python run_train_preprocessing.py` to create mels and pseudo labeles for `data/train_audio`
     
-    b) `python run_unlabeled_preprocessing.py` to create mels and pseudo labeles for `unlabeled_soundscapes`
+    b) `python run_unlabeled_preprocessing.py` to create mels and pseudo labeles for `data/unlabeled_soundscapes`
     
-    c) For each config from `configs/`:
+    c) For each config from `configs/` in a similar way:
+
        `python run_training.py --cfg configs/effnet_seg20_80low.json`
     
     d) `python run_inference.py`
+
+    Submission file will be in `tmp/` directory.
 
 
 # INFERENCE on Kaggle
