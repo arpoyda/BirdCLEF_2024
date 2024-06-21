@@ -28,6 +28,8 @@ There are two options to reproduce the solution.
 
     Run the following scripts from the top directory.
     
+    a) Download models checkpoints (`fold0.ckpt`, `fold1.ckpt`, `fold3.ckpt`) from [here](https://www.kaggle.com/datasets/chemrovkirill/birdclef24-final) and put in `models_weights/`. This models are trained only on `train_audio` and used for pseudo labeling of `unlabeled_soundscapes`.
+
     a) Create mels and pseudo labeles for `data/train_audio`:
     
        `python run_train_preprocessing.py`
