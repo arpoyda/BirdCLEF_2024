@@ -15,7 +15,7 @@ Competition data can be downloaded from [here](https://www.kaggle.com/competitio
 
 ## Model Build
 
-There are three options to produce the solution.
+There are two options to reproduce the solution.
 1) With pretrained models.
     
     a) Download models checkpoints from [here](https://www.kaggle.com/datasets/chemrovkirill/birdclef24-final) and put in `models_weights/`.
