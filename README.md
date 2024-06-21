@@ -1,19 +1,19 @@
 Below you can find an outline of how to reproduce [our solution](https://www.kaggle.com/competitions/birdclef-2024/discussion/512197) for the BirdCLEF 2024 competition.
 
 
-# HARDWARE and SOFTWARE:
+## Hardware/Software:
 
 Kaggle kernel with Tesla P100.
 
 Python packages are detailed separately in `requirements.txt`
 
 
-# DATA SETUP
+## Data Setup
 
 Competition data can be downloaded from [here](https://www.kaggle.com/competitions/birdclef-2024/data). Put it in the `./data/` directory.
 
 
-# MODEL BUILD
+## Model Build
 
 There are three options to produce the solution.
 1) With pretrained models.
@@ -47,7 +47,7 @@ There are three options to produce the solution.
     Submission file will be in `tmp/` directory.
 
 
-# INFERENCE on Kaggle
+## Inference on Kaggle
 
 Inference is published in a Kaggle kernel [here](https://www.kaggle.com/code/chemrovkirill/birdclef-2024-1st-place-inference). Weights from our trained models are provided in a kaggle dataset linked to the inference kernel [here](https://www.kaggle.com/datasets/chemrovkirill/birdclef24-final).
 
