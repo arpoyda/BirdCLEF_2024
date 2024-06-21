@@ -40,7 +40,7 @@ There are two options to reproduce the solution.
 
        `python run_training.py --cfg configs/effnet_seg20_80low.json`
     
-    d) Make predicttion for `data/test_soundscapes`:
+    d) Make prediction for `data/test_soundscapes`:
     
        `python run_inference.py`
 
